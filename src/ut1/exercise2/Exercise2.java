@@ -1,7 +1,5 @@
 package ut1.exercise2;
 
-import jam.Utils;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +7,8 @@ import java.io.IOException;
 public class Exercise2 {
     public static void main(String[] args) {
         String procName ="ut1.exercise2.Exercise2Proc";
-        String pathProcClass = "D:\\jamprogramacion\\FPAppMultiPlat\\IntelliJ\\PSP\\out\\production\\PSP";
-        String outFilesPath = "D:\\jamprogramacion\\FPAppMultiPlat\\IntelliJ\\PSP\\src\\ut1\\exercise2\\";
+        String pathProcClass = System.getProperty("user.dir") + "\\out\\production\\PSP";
+        String outFilesPath = System.getProperty("user.dir") + "\\src\\ut1\\exercise2\\";
 
         String sentence = JOptionPane.showInputDialog("Enter a sentence to count chars and words:");
         ProcessBuilder procSentence = new ProcessBuilder("java", procName, sentence);

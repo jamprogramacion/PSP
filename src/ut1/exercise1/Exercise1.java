@@ -1,15 +1,14 @@
 package ut1.exercise1;
 
 import jam.Utils;
-
 import java.io.File;
 import java.io.IOException;
 
 public class Exercise1 {
     public static void main(String[] args) {
         String procName ="ut1.exercise1.Exercise1Proc";
-        String pathProcClass = "D:\\jamprogramacion\\FPAppMultiPlat\\IntelliJ\\PSP\\out\\production\\PSP";
-        String outFilesPath = "D:\\jamprogramacion\\FPAppMultiPlat\\IntelliJ\\PSP\\src\\ut1\\exercise1\\";
+        String pathProcClass = System.getProperty("user.dir") + "\\out\\production\\PSP";
+        String outFilesPath = System.getProperty("user.dir") + "\\src\\ut1\\exercise1\\";
 
         int num1 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
         int num2 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
