@@ -58,14 +58,26 @@ public class Utils {
     }
 
     /**
-     * Returns a random int within interval [min, max).
+     * Returns a random int within interval [min, max].
      *
      * @param min: min int number of random interval, included.
-     * @param max: max int number of random interval, not included.
+     * @param max: max int number of random interval, included.
      * @return random int number n with min <= n < max.
      */
-    public static int randomInt(double min, double max) {
+    public static int randomInt(int min, int max) {
 
-        return (int)(randomNumber(min, max));
+        return (int)(randomNumber(min, max + 1));
+    }
+
+    /**
+     * Returns a random long number within interval [min, max].
+     *
+     * @param min: min long number of random interval, included.
+     * @param max: max long number of random interval, included.
+     * @return random long number n with min <= n < max.
+     */
+    public static long randomLong(long min, long max) {
+
+        return (long)(randomNumber(min, max + 1));
     }
 }
