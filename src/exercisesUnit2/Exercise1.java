@@ -4,6 +4,7 @@ import jam.Utils;
 
 class EasyThread extends Thread {
     public EasyThread(String name) {
+
         super(name);
     }
 
