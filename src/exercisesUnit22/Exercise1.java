@@ -45,10 +45,9 @@ class Client extends Thread {
     }
 }
 public class Exercise1 {
-    private static final int SLEEP_TIME = 500;
-    private static final Cash superCash = new Cash();
-
     public static void main(String[] args) {
+        final int SLEEP_TIME = 500;
+        Cash superCash = new Cash();
         int numClient = 1;
 
         while (true) {

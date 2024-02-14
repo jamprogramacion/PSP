@@ -63,13 +63,12 @@ class Client2 extends Thread {
     }
 }
 public class Exercise2 {
-    private static final int SLEEP_TIME = 1000;
-    private static final int NUM_CASHES = 4;
-    private static final int NUM_CLIENTS = 10;
-    private static final MultiCash superCashes = new MultiCash(NUM_CASHES);
-    private static final Client2[] clients = new Client2[NUM_CLIENTS];
-
     public static void main(String[] args) {
+        final int SLEEP_TIME = 1000;
+        final int NUM_CASHES = 4;
+        final int NUM_CLIENTS = 10;
+        MultiCash superCashes = new MultiCash(NUM_CASHES);
+        Client2[] clients = new Client2[NUM_CLIENTS];
 
         for (int numClient = 0; numClient < NUM_CLIENTS; numClient++) {
             clients[numClient] = new Client2(numClient + 1, superCashes);

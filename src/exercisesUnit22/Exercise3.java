@@ -3,17 +3,20 @@ package exercisesUnit22;
 import jam.Utils;
 
 class Lines {
-    private int numLines;
+    private final int numLines;
 
     public Lines(int numLines) {
         this.numLines = numLines;
     }
+
     public int nextLine(int lineNumber) {
-        if (lineNumber < (numLines - 1)) {
-            return lineNumber + 1;
-        } else {
-            return 0;
+        int numLine = lineNumber + 1;
+
+        if (numLine == numLines) {
+            return -numLines + 1;
         }
+
+        return numLine;
     }
 
     public int randomLine() {
@@ -21,17 +24,13 @@ class Lines {
     }
 }
 class Thief extends Thread {
-    private static final int TIME_IN_LINE = 10;
-    private static final int NUM_OBJECTS = 10;
-    private static final int NUM_WARNINGS = 5;
     private final Lines lines;
     private int numLine = 0;
     private int numObjets = 0;
     private int numWarnings = 0;
-    private int direction = 1;
 
     public int getNumLine() {
-        return numLine;
+        return Math.abs(numLine);
     }
 
     public Thief(Lines lines) {
@@ -41,23 +40,29 @@ class Thief extends Thread {
     @Override
     public String toString() {
         return "Thief {" +
-                "Objets: " + numObjets +
-                ", Warnings: " + numWarnings +
+                "line: " + getNumLine() +
+                ", objets: " + numObjets +
+                ", warnings: " + numWarnings +
                 "}";
     }
 
     @Override
     public void run() {
+        final int TIME_IN_LINE = 10;
+        final int NUM_OBJECTS = 10;
+        final int NUM_WARNINGS = 5;
+
         super.run();
 
         while ((numObjets < NUM_OBJECTS) && (numWarnings < NUM_WARNINGS)) {
+            System.out.println(this);
             try {
                 Thread.sleep(TIME_IN_LINE * 1000L);
                 numObjets++;
-                lines.nextLine(numLine);
+                numLine = lines.nextLine(numLine);
             } catch (InterruptedException e) {
                 numWarnings++;
-                lines.nextLine(numLine);
+                numLine = lines.nextLine(numLine);
             }
         }
     }
@@ -73,6 +78,13 @@ class Camera extends Thread {
         numLine = lines.randomLine();
     }
 
+    @Override
+    public String toString() {
+        return "Camera {" +
+                "line: " + numLine +
+                '}';
+    }
+
     public int getNumLine() {
         return numLine;
     }
@@ -81,22 +93,35 @@ class Camera extends Thread {
     public void run() {
         super.run();
 
-        try {
-            Thread.sleep(TIME_IN_LINE * 1000L);
-            lines.randomLine();
-        } catch (InterruptedException ignore) {
-
+        while (true) {
+            System.out.println(this);
+            try {
+                Thread.sleep(TIME_IN_LINE * 1000L);
+                numLine = lines.randomLine();
+            } catch (InterruptedException e) {
+                return;
+            }
         }
     }
 }
 
 public class Exercise3 {
-    private static final int NUM_LINES = 10;
-    private static final Lines lines = new Lines(NUM_LINES);
-    private static final Thief thief = new Thief(lines);
-    private static final Camera camera = new Camera(lines);
-
     public static void main(String[] args) {
+        final int NUM_LINES = 10;
+        Lines lines = new Lines(NUM_LINES);
+        Thief thief = new Thief(lines);
+        Camera camera = new Camera(lines);
 
+        camera.start();
+        thief.start();
+        while (thief.isAlive()) {
+            if (camera.getNumLine() == thief.getNumLine()) {
+                thief.interrupt();
+            }
+        }
+        camera.interrupt();
+
+        System.out.println();
+        System.out.println(thief);
     }
 }
