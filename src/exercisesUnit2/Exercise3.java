@@ -1,5 +1,7 @@
 package exercisesUnit2;
 
+import jam.Utils;
+
 class Counter {
     private long counter = 0;
 
@@ -53,17 +55,10 @@ public class Exercise3 {
             sumCounters[numCounter] = new SumCounter("Sum counter " + numCounter, counterSum, LIMIT);
             sumCounters[numCounter].start();
         }
-        boolean countersActive = true;
-        int numCounter = 0;
-        while (countersActive) {
-            countersActive = sumCounters[numCounter].isAlive();
-            if (countersActive || (numCounter == (sumCounters.length - 1))) {
-                numCounter = 0;
-            } else {
-                numCounter++;
-            }
-        }
 
+        while (Utils.threadsActive(sumCounters)) {
+
+        }
         System.out.println("Total counter = " + counterSum.getCounter());
     }
 }

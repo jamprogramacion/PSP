@@ -80,4 +80,25 @@ public class Utils {
 
         return (long)(randomNumber(min, max + 1));
     }
+
+    /**
+     * Returns true if there are one active thread into threadsArray.
+     *
+     * @param threadsArray: array with threads to analyze.
+     * @return true if there are one active thread into threadsArray.
+     */
+    public static boolean threadsActive(Thread[] threadsArray) {
+        int numThread = 0;
+
+        while (numThread < threadsArray.length) {
+            if (threadsArray[numThread].isAlive()) {
+                return true;
+            }
+
+            numThread++;
+        }
+
+        return false;
+    }
+
 }
