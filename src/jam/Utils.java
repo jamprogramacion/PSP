@@ -1,11 +1,14 @@
+/**
+ *
+ * @author Jesús Avilés Martínez
+ *
+ */
 package jam;
 
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Jesús Avilés Martínez
- *
+ * Utilities that makes life easier.
  */
 public class Utils {
 

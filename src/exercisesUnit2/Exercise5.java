@@ -1,5 +1,8 @@
 package exercisesUnit2;
 
+/**
+ * Counts number of messages and interruptions, until maxInterruptions is reached.
+ */
 class InterruptCounter implements Runnable {
     private static final int SLEEP_TIME = 1000;
     private final String name;
@@ -7,6 +10,10 @@ class InterruptCounter implements Runnable {
     private int numMessage = 0;
     private int numInterruption = 0;
 
+    /**
+     * @param name Thread id.
+     * @param maxInterruptions When it is reached, thread terminates.
+     */
     public InterruptCounter(String name, int maxInterruptions) {
         this.name = name;
         this.maxInterruptions = maxInterruptions;
@@ -30,6 +37,12 @@ class InterruptCounter implements Runnable {
         }
     }
 }
+
+/**
+ * Starts interrupt counters, and iterates interrupting counters if they are alive,
+ * and then sleeps for some time and go for next.
+ * Stops when there are no counters alive.
+ */
 public class Exercise5 {
     private static final int SLEEP_TIME = 1000;
     static final int NUM_THREADS = 5;
@@ -50,7 +63,7 @@ public class Exercise5 {
                     try {
                         Thread.sleep(SLEEP_TIME);
                     } catch (InterruptedException ignore) {
-
+                        return;
                     }
                 } else {
                     countersActive--;

@@ -2,24 +2,37 @@ package exercisesUnit2;
 
 import jam.Utils;
 
+/**
+ * A simple counter
+ */
 class Counter {
     private long counter = 0;
 
+    /**
+     * @param add Adds to counter
+     */
     public synchronized void addCounter(long add) {
         counter += add;
     }
 
     public long getCounter() {
-
         return counter;
     }
 }
 
+/**
+ * Thread that sums one to counter on every iteration, until limit is reached.
+ */
 class SumCounter extends Thread {
     private final Counter counterSum;
     private long counter = 1;
     private final long limit;
 
+    /**
+     * @param name Thread id.
+     * @param counterSum Reference to Counter object.
+     * @param limit Max value for counter.
+     */
     public SumCounter(String name, Counter counterSum, long limit) {
         super(name);
 
@@ -43,6 +56,9 @@ class SumCounter extends Thread {
     }
 }
 
+/**
+ * Starts threads to sum to counter until limit.
+ */
 public class Exercise3 {
     private static final int NUM_THREADS = 10;
     private static final long LIMIT = 100000;
