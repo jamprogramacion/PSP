@@ -55,8 +55,8 @@ public class Exercise1 {
             numClient++;
             try {
                 Thread.sleep(SLEEP_TIME);
-            } catch (InterruptedException ignore) {
-
+            } catch (InterruptedException e) {
+                return;
             }
         }
     }

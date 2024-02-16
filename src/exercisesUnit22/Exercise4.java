@@ -27,8 +27,8 @@ class Singer extends Thread {
                 }
                 System.out.println("Singer [" + getName() + "] start rest...");
                 Thread.sleep(REST_TIME * 1000L);
-            } catch (InterruptedException ignore) {
-
+            } catch (InterruptedException e) {
+                return;
             }
         }
     }

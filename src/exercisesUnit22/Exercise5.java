@@ -5,22 +5,33 @@ import java.util.concurrent.Semaphore;
 
 class Fountain {
     private final Semaphore tap = new Semaphore(1);
-    private long water = 100000;
+    private long water = 50000;
 
-    public long getWater() {
-        return water;
-    }
+    public void drink(Pupil pupil, long time) throws InterruptedException {
+        if (water == 0) {
+            throw new InterruptedException("Pupil [" + pupil.getName() + "] cannot drink. EMPTY FOUNTAIN!!");
+        }
 
-    public void drink(String pupilName, long time) {
-        try {
-            tap.acquire();
-            System.out.println("Pupil [" + pupilName + "] drinking for " + (time / 1000) + "s");
-            Thread.sleep(time);
-            water -= time;
+        tap.acquire();
+        long timeCanDrink = Math.min(time, water);
+        if (water > 0) {
+            if (time == timeCanDrink) {
+                System.out.println("Pupil [" + pupil.getName() + "] drinking for " + (timeCanDrink / 1000) + "s");
+            } else {
+                System.out.println("Pupil [" + pupil.getName() + "] only can drink for " + (timeCanDrink / 1000) + "s of " +
+                        (time / 1000) + "s requested");
+            }
+            water -= timeCanDrink;
             System.out.println("Remaining water: " + water + "l");
+            try {
+                Thread.sleep(time);
+            } finally {
+                tap.release();
+            }
+        } else {
             tap.release();
-        } catch (InterruptedException ignore) {
 
+            throw new InterruptedException("Pupil [" + pupil.getName() + "] try to drink after waiting, but... EMPTY FOUNTAIN!!");
         }
     }
 
@@ -47,15 +58,22 @@ class Pupil extends Thread {
         super.run();
 
         while (true) {
-            if (fountain.queueLength() <= MAX_QUEUE_LENGTH) {
+            int queue = fountain.queueLength();
+            if (queue <= MAX_QUEUE_LENGTH) {
                 System.out.println("Pupil [" + getName() + "] in queue...");
-                fountain.drink(getName(), Utils.randomInt(MIN_DRINK_TIME, MAX_DRINK_TIME) * 1000L);
+                try {
+                    fountain.drink(this, Utils.randomInt(MIN_DRINK_TIME, MAX_DRINK_TIME) * 1000L);
+                } catch (InterruptedException e) {
+                    System.out.println(e.getMessage());
+
+                    return;
+                }
             } else {
                 try {
-                    System.out.println("Queue too long, pupil [" + getName() + "] starts studying...");
+                    System.out.println("Queue too long [" + queue + "], pupil [" + getName() + "] starts studying...");
                     Thread.sleep(STUDY_TIME * 1000L);
-                } catch (InterruptedException ignore) {
-
+                } catch (InterruptedException e) {
+                    return;
                 }
             }
         }
@@ -70,7 +88,5 @@ public class Exercise5 {
             Pupil pupil = new Pupil(pupilNum, fountain);
             pupil.start();
         }
-
-        while (fountain.getWater() > 0);
     }
 }
