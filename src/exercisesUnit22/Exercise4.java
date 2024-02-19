@@ -2,9 +2,17 @@ package exercisesUnit22;
 
 import java.util.concurrent.Semaphore;
 
+/**
+ * Singer thread, sings SING_TIME and rests REST_TIME.
+ * Rests after singing, and if it cannot sing.
+ */
 class Singer extends Thread {
     private final Semaphore micro;
 
+    /**
+     * @param singerNumber Singer id.
+     * @param micro Micro manager.
+     */
     public Singer(int singerNumber, Semaphore micro) {
         super(String.valueOf(singerNumber));
 
@@ -33,6 +41,10 @@ class Singer extends Thread {
         }
     }
 }
+
+/**
+ * Starts singer threads, and micro manager.
+ */
 public class Exercise4 {
     public static void main(String[] args) {
         final int NUM_SINGERS = 5;

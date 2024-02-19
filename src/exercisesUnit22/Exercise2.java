@@ -4,22 +4,42 @@ import jam.Utils;
 
 import java.util.Arrays;
 
+/**
+ * Class to manage all cashes within supermarket.
+ */
 class MultiCash {
     private final long[] total;
 
+    /**
+     * @param numCashes Init cashes array, to store total amount in them.
+     */
     public MultiCash(int numCashes) {
         total = new long[numCashes];
         Arrays.fill(total, 0);
     }
 
+    /**
+     * @return Number of cashes within supermarket.
+     */
     public int length() {
         return total.length;
     }
 
+    /**
+     * @param numCash Cash number.
+     *
+     * @return Amount in cash.
+     */
     public long getTotal(int numCash) {
         return total[numCash];
     }
 
+    /**
+     * @param numCash Cash number.
+     * @param pay Amount to add to the cash.
+     *
+     * @return Total amount in the cash.
+     */
     public synchronized long addCash(int numCash, int pay) {
         total[numCash] += pay;
 
@@ -27,12 +47,20 @@ class MultiCash {
     }
 }
 
+/**
+ * Client thread, buys a random amount, random time shopping
+ * and random cash number.
+ */
 class Client2 extends Thread {
     private final int BUY_AMOUNT = Utils.randomInt(100, 200);
     private final int BUY_TIME = Utils.randomInt(3, 7);
     private final MultiCash payCash;
     private final int numCash;
 
+    /**
+     * @param clientNumber Client id.
+     * @param payCash Cashes within supermarket.
+     */
     public Client2(int clientNumber, MultiCash payCash) {
         super(String.valueOf(clientNumber));
 
@@ -62,6 +90,11 @@ class Client2 extends Thread {
         }
     }
 }
+
+/**
+ * Starts client threads every SLEEP_TIME and wait until all clients have paid.
+ * Then shows total amount in every cash.
+ */
 public class Exercise2 {
     public static void main(String[] args) {
         final int SLEEP_TIME = 1000;

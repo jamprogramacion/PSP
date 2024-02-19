@@ -3,10 +3,20 @@ package exercisesUnit22;
 import jam.Utils;
 import java.util.concurrent.Semaphore;
 
+/**
+ * Fountain manager.
+ * Lets pupil drink until water tank is empty.
+ */
 class Fountain {
     private final Semaphore tap = new Semaphore(1);
     private long water = 50000;
 
+    /**
+     * @param pupil Pupil that wants to drink.
+     * @param time Time that pupil is going to be drinking.
+     *
+     * @throws InterruptedException when fountain is empty.
+     */
     public void drink(Pupil pupil, long time) throws InterruptedException {
         if (water == 0) {
             throw new InterruptedException("Pupil [" + pupil.getName() + "] cannot drink. EMPTY FOUNTAIN!!");
@@ -35,14 +45,28 @@ class Fountain {
         }
     }
 
+    /**
+     * @return Pupils in queue.
+     */
     public int queueLength() {
         return tap.getQueueLength();
     }
 }
 
+/**
+ * Pupils that want to drink.
+ * Drink between MIN_DRINK_TIME and MAX_DRINK_TIME, then goes to study for STUDY_TIME.
+ * If queue is sorter or equal than MAX_QUEUE_LENGTH, then waits to drink.
+ * If queue is longer than MAX_QUEUE_LENGTH, then goes to study for STUDY_TIME.
+ * Terminates when fountain is empty.
+ */
 class Pupil extends Thread {
     private final Fountain fountain;
 
+    /**
+     * @param pupilNumber Pupil id.
+     * @param fountain Fountain manager.
+     */
     public Pupil(int pupilNumber, Fountain fountain) {
         super(String.valueOf(pupilNumber));
 
@@ -79,6 +103,10 @@ class Pupil extends Thread {
         }
     }
 }
+
+/**
+ * Starts pupil threads.
+ */
 public class Exercise5 {
     public static void main(String[] args) {
         final int NUM_PUPILS = 10;

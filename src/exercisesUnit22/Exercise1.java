@@ -2,9 +2,17 @@ package exercisesUnit22;
 
 import jam.Utils;
 
+/**
+ * Counts the total amount of payments.
+ */
 class Cash {
     private long total = 0;
 
+    /**
+     * @param pay Adds to cash total and returns total.
+     *
+     * @return Total in cash.
+     */
     public synchronized long addCash(int pay) {
         total += pay;
 
@@ -12,11 +20,18 @@ class Cash {
     }
 }
 
+/**
+ * Client thread, buys a random amount, and random time shopping.
+ */
 class Client extends Thread {
     private final int BUY_AMOUNT = Utils.randomInt(100, 200);
     private final int BUY_TIME = Utils.randomInt(3, 7);
     private final Cash payCash;
 
+    /**
+     * @param clientNumber Client id.
+     * @param payCash Amount that client spends.
+     */
     public Client(int clientNumber, Cash payCash) {
         super(String.valueOf(clientNumber));
 
@@ -44,6 +59,10 @@ class Client extends Thread {
         }
     }
 }
+
+/**
+ * Starts client threads every SLEEP_TIME in an infinite loop.
+ */
 public class Exercise1 {
     public static void main(String[] args) {
         final int SLEEP_TIME = 500;

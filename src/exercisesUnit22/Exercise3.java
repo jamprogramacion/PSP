@@ -2,13 +2,26 @@ package exercisesUnit22;
 
 import jam.Utils;
 
+/**
+ * Lines within supermarket.
+ * Manages going from one line to next, and random line number.
+ */
 class Lines {
     private final int numLines;
 
+    /**
+     * @param numLines Number of lines within supermarket.
+     */
     public Lines(int numLines) {
         this.numLines = numLines;
     }
 
+    /**
+     * @param lineNumber Line number right now.
+     *
+     * @return Next line number.
+     *         Goes ascending from 0, and when end is reached then goes descending.
+     */
     public int nextLine(int lineNumber) {
         int numLine = lineNumber + 1;
 
@@ -19,10 +32,19 @@ class Lines {
         return numLine;
     }
 
+    /**
+     * @return Random line number.
+     */
     public int randomLine() {
         return Utils.randomInt(0, numLines - 1);
     }
 }
+
+/**
+ * Thread for thief.
+ * Spends TIME_IN_LINE in every line, then goes to next.
+ * Terminates when reach NUM_OBJECTS stolen, or when reach NUM_WARNINGS.
+ */
 class Thief extends Thread {
     private final Lines lines;
     private int numLine = 0;
@@ -33,6 +55,9 @@ class Thief extends Thread {
         return Math.abs(numLine);
     }
 
+    /**
+     * @param lines Manager for thief line.
+     */
     public Thief(Lines lines) {
         this.lines = lines;
     }
@@ -68,11 +93,17 @@ class Thief extends Thread {
     }
 }
 
+/**
+ * Jumps randomly between supermarket lines, spending TIME_IN_LINE in every one.
+ */
 class Camera extends Thread {
     private static final int TIME_IN_LINE = 3;
     private final Lines lines;
     private int numLine;
 
+    /**
+     * @param lines  Manager for camera line.
+     */
     public Camera(Lines lines) {
         this.lines = lines;
         numLine = lines.randomLine();
@@ -105,6 +136,10 @@ class Camera extends Thread {
     }
 }
 
+/**
+ * Starts camera and thief threads.
+ * If camera and thief are in same line, then warns thief.
+ */
 public class Exercise3 {
     public static void main(String[] args) {
         final int NUM_LINES = 10;
