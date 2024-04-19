@@ -86,12 +86,12 @@ class SumElements extends Thread {
 }
 
 public class Exercise1 {
-    private static final int NUM_THREADS = 5;
-    private static final int NUM_ELEMENTS = 1003;
-    private final static int[] array = new int[NUM_ELEMENTS];
-    private final static ArraySum arraySum = new ArraySum(NUM_THREADS);
-
     public static void main(String[] args) {
+        final int NUM_THREADS = 5;
+        final int NUM_ELEMENTS = 1003;
+        final int[] array = new int[NUM_ELEMENTS];
+        final ArraySum arraySum = new ArraySum(NUM_THREADS);
+
         for (int value = 0; value < array.length; value++) {
             array[value] = Utils.randomInt(1, 10);
         }
