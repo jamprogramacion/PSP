@@ -4,11 +4,23 @@ import jam.Utils;
 
 import java.util.concurrent.PriorityBlockingQueue;
 
-class PrintingJob implements Runnable, Comparable {
-    private static int PRINT_TIME_MIN = 1;
-    private static int PRINT_TIME_MAX = 5;
-    private int jobNumber;
-    private int jobPriority;
+class PrintingSystem {
+    private final PriorityBlockingQueue<PrintingJob> printQueue = new PriorityBlockingQueue<>();
+
+    public synchronized void AddPrintJob(PrintingJob job) {
+        printQueue.add(job);
+    }
+
+    public int Print() throws InterruptedException {
+        printQueue.take().run();
+
+        return printQueue.size();
+    }
+}
+
+class PrintingJob implements Runnable, Comparable<PrintingJob> {
+    private final int jobNumber;
+    private final int jobPriority;
 
     public PrintingJob(int jobNumber, int jobPriority) {
         this.jobNumber = jobNumber;
@@ -17,60 +29,42 @@ class PrintingJob implements Runnable, Comparable {
 
     @Override
     public void run() {
+        int PRINT_TIME_MIN = 1;
+        int PRINT_TIME_MAX = 5;
+
         long printTime = Utils.randomInt(PRINT_TIME_MIN, PRINT_TIME_MAX);
         System.out.println("Print job [" + jobNumber + "] priority [" + jobPriority + "] starts printing for " + printTime + " seconds...");
         try {
             Thread.sleep(printTime * 1000);
-            System.out.println("Print job [" + jobNumber + "] priority [" + jobPriority + "] finished!!");
+            System.out.println("Print job [" + jobNumber + "] finished!!");
         } catch (InterruptedException e) {
             System.out.println("Print job [" + jobNumber + "] interrupted!!");
         }
     }
 
+    public int getJobPriority() {
+        return this.jobPriority;
+    }
+
     @Override
-    public int compareTo(Object o) {
-        if (jobNumber < ((PrintingJob) o).jobNumber) {
-            return -1;
-        }
-
-        if (jobNumber > ((PrintingJob) o).jobNumber) {
-            return 1;
-        }
-
-        return 0;
-    }
-}
-
-class PrintingSystem {
-    private PriorityBlockingQueue<PrintingJob> printQueue = new PriorityBlockingQueue<>();
-
-    public Thread AddPrintJob(int jobNumber, int priority) {
-        PrintingJob printJob = new PrintingJob(jobNumber, priority);
-        Thread job = new Thread(printJob);
-        job.setPriority(priority);
-        printQueue.add(printJob);
-
-        return job;
-    }
-
-    public void PrintJobs() throws InterruptedException {
-        while (printQueue.size() > 0) {
-            printQueue.take().run();
-        }
+    public int compareTo(PrintingJob o) {
+        return Integer.compare(jobPriority, o.getJobPriority()) * (-1);
     }
 }
 
 public class Exercise3 {
-    private static int NUM_JOBS = 10;
-
     public static void main(String[] args) throws InterruptedException {
+        int NUM_JOBS = 10;
         PrintingSystem printer = new PrintingSystem();
-        Thread[] jobs = new Thread[NUM_JOBS];
+        PrintingJob[] jobs = new PrintingJob[NUM_JOBS];
 
         for (int job = 0; job < NUM_JOBS; job++) {
-            jobs[job] = printer.AddPrintJob(job, Utils.randomInt(Thread.MIN_PRIORITY, Thread.MAX_PRIORITY));
+            jobs[job] = new PrintingJob(job, Utils.randomInt(Thread.MIN_PRIORITY, Thread.MAX_PRIORITY));
+            printer.AddPrintJob(jobs[job]);
         }
 
-        printer.PrintJobs();
+        while (printer.Print() > 0) {
+
+        }
     }
 }
