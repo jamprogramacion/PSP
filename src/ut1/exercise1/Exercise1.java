@@ -1,6 +1,6 @@
 package ut1.exercise1;
 
-import jam.Utils;
+import jam.UtilsSwing;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,8 +10,8 @@ public class Exercise1 {
         String pathProcClass = System.getProperty("user.dir") + "\\out\\production\\PSP";
         String outFilesPath = System.getProperty("user.dir") + "\\src\\ut1\\exercise1\\";
 
-        int num1 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
-        int num2 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
+        int num1 = UtilsSwing.inputInt("Enter two integers, both 0 to exit:", null);
+        int num2 = UtilsSwing.inputInt("Enter two integers, both 0 to exit:", null);
         boolean exit = (num1 == 0) && (num2 == 0);
         while (!exit) {
             ProcessBuilder procSeries = new ProcessBuilder("java", procName, String.valueOf(num1), String.valueOf(num2));
@@ -24,8 +24,8 @@ public class Exercise1 {
                 System.err.println("Error opening file");
             }
 
-            num1 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
-            num2 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
+            num1 = UtilsSwing.inputInt("Enter two integers, both 0 to exit:", null);
+            num2 = UtilsSwing.inputInt("Enter two integers, both 0 to exit:", null);
             exit = (num1 == 0) && (num2 == 0);
         }
     }

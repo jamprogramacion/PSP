@@ -1,6 +1,6 @@
 package ut1.exercise3;
 
-import jam.Utils;
+import jam.UtilsSwing;
 import java.io.File;
 import java.io.IOException;
 
@@ -12,14 +12,14 @@ public class Exercise3 {
         /* Number of process to create */
         int numProcs = 4;
 
-        int num1 = Utils.inputInt("Enter two integers, both 0 to exit:", null);
-        int num2 = Utils.inputInt("Enter two integers, both 0 to exit\n(this 2nd, at least 1000 greater/smaller than 1st):", null);
+        int num1 = UtilsSwing.inputInt("Enter two integers, both 0 to exit:", null);
+        int num2 = UtilsSwing.inputInt("Enter two integers, both 0 to exit\n(this 2nd, at least 1000 greater/smaller than 1st):", null);
         if ((num1 == 0) && (num2 == 0)) {
             return;
         }
 
         while (Math.abs(num2 - num1) < 1000) {
-            num2 = Utils.inputInt("Enter two integers, both 0 to exit\n(this 2nd, at least 1000 greater/smaller than 1st):", null);
+            num2 = UtilsSwing.inputInt("Enter two integers, both 0 to exit\n(this 2nd, at least 1000 greater/smaller than 1st):", null);
         }
         /* How many numbers to sum in each process */
         int steps = (num2 - num1 + 1) / numProcs;
