@@ -67,7 +67,7 @@ class CustomerServiceAgent implements Runnable {
                 String call = intType == 1 ? "boss" : "emergency";
                 System.out.println("Window [" + numWindow + "] stopped for " + call + " call (" + numInterruptions + "/" + MAX_INTERRUPTIONS + ")!!");
                 try {
-                    Thread.sleep(1000 * (intType == 1 ? TIME_BOSS : TIME_CUSTOMER));
+                    Thread.sleep(1000 * (intType == 1 ? TIME_BOSS : TIME_EMERGENCY));
                 } catch (InterruptedException ex) {
                     System.out.println("---->>>> Window [" + numWindow + "] busy with " + call + ", cannot be interrupted!!");
                 }
@@ -77,11 +77,9 @@ class CustomerServiceAgent implements Runnable {
             System.out.println("---->>>> Window [" + numWindow + "] closed because of max interruptions reached!!");
 
             return;
-        } else if (numCustomer == -1) {
-            System.out.println("---->>>> Window [" + numWindow + "] closed because of end of customers queue");
-
-            return;
         }
+
+        System.out.println("---->>>> Window [" + numWindow + "] closed because of end of customers queue");
     }
 }
 
