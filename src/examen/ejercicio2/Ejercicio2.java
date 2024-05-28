@@ -91,7 +91,7 @@ public class Ejercicio2 {
             try {
                 Thread.sleep(INTERVAL * 1000);
                 persons[numPerson] = new Person(numPerson + 1, ORANGE, LEMON, cash);
-                persons[numPerson].run();;
+                persons[numPerson].start();
             } catch (InterruptedException e) {
                 System.out.println("Exception en la persona [" + (numPerson + 1) + "] hilo principal: " + e.getMessage());
             }

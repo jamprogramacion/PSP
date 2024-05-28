@@ -23,10 +23,9 @@ class Singer extends Thread {
         super.run();
 
         while (true) {
-            boolean canEat = false;
             try {
                 System.out.println("Cantante [" + getName() + "] intenta comer...");
-                canEat = dressRoom.tryAcquire(1);
+                boolean canEat = dressRoom.tryAcquire(1);
                 if (canEat) {
                     System.out.println("Cantante [" + getName() + "] consigue a comer");
                     Thread.sleep(EAT_TIME * 1000);
@@ -43,7 +42,7 @@ class Singer extends Thread {
     }
 }
 
-public class Ejercicio4 {
+public class Ejercicio3 {
     public static void main(String[] args) {
         final int NUM_SINGERS = 3;
         final Semaphore dressRoom = new Semaphore(1);
